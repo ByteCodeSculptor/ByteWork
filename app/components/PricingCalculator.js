@@ -5,10 +5,10 @@ import { useState, useEffect } from 'react';
 const PricingCalculator = () => {
   // 1. Define Services and Base Prices
   const services = [
-    { id: 'quantum', name: 'Quantum Computing (Qiskit)', basePrice: 15000 },
+    { id: 'quantum', name: 'Quantum Computing (Qiskit)', basePrice: 10000 },
     { id: 'mern', name: 'MERN Stack Development', basePrice: 12000 },
-    { id: 'java', name: 'Java Architecture (Spring)', basePrice: 10000 },
-    { id: 'python', name: 'Python & AI Automation', basePrice: 8000 },
+    { id: 'java', name: 'Java Architecture (Spring)', basePrice: 12000 },
+    { id: 'python', name: 'Python & AI Automation', basePrice: 9000 },
   ];
 
   const [selectedServiceId, setSelectedServiceId] = useState(services[0].id);
@@ -97,7 +97,7 @@ const PricingCalculator = () => {
     const encodedMessage = encodeURIComponent(message);
     
     // Replace with your actual number
-    window.open(`https://wa.me/919876543210?text=${encodedMessage}`, '_blank');
+    window.open(`https://wa.me/919182407243?text=${encodedMessage}`, '_blank');
   };
 
   return (

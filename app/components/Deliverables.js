@@ -70,21 +70,21 @@ const Deliverables = () => {
                 <span className="flex-shrink-0 h-6 w-6 text-purple-500">★</span>
                 <span className="ml-3 text-gray-700">
                   <strong className="block text-gray-900">Research Paper (IEEE/Springer)</strong>
-                  Available as a premium add-on only.
+                  Available as a premium add-on only onDemand.
                 </span>
               </li>
               <li className="flex items-start">
                 <span className="flex-shrink-0 h-6 w-6 text-red-500">!</span>
                 <span className="ml-3 text-gray-700">
                   <strong className="block text-gray-900">Extra Mentorship</strong>
-                  Additional sessions beyond the standard 3 are chargeable.
+                  Additional sessions beyond the standard 3 are chargeable at 500rs each.
                 </span>
               </li>
               <li className="flex items-start">
                 <span className="flex-shrink-0 h-6 w-6 text-blue-500">🛠</span>
                 <span className="ml-3 text-gray-700">
                   <strong className="block text-gray-900">Remote Installation</strong>
-                  AnyDesk support for environment setup is a separate service.
+                  AnyDesk support for environment setup is a separate service starts from 500rs.
                 </span>
               </li>
             </ul>

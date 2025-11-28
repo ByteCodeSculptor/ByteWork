@@ -1,12 +1,17 @@
+import Navbar from './components/Navbar'; // Import the new Navbar
 import PricingCalculator from './components/PricingCalculator';
 import ServiceCatalog from './components/ServiceCatalog';
 import Deliverables from './components/Deliverables'; 
-import Footer from './components/Footer'; // Import the Footer
+import Footer from './components/Footer';
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-white font-sans text-slate-900 flex flex-col">
-      {/* Hero Section */}
+      
+      {/* 1. Navbar (Sticky at top) */}
+      <Navbar />
+
+      {/* 2. Hero Section */}
       <section className="bg-gradient-to-r from-indigo-900 to-indigo-700 text-white py-24 px-4 text-center">
         <h1 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">
           Consultancy & Portfolio
@@ -19,13 +24,13 @@ export default function Home() {
         </button>
       </section>
 
-      {/* Service Catalog */}
+      {/* 3. Service Catalog */}
       <ServiceCatalog />
 
-      {/* Deliverables & Scope */}
+      {/* 4. Deliverables & Scope */}
       <Deliverables />
 
-      {/* Pricing Calculator */}
+      {/* 5. Pricing Calculator */}
       <section className="py-16 bg-gray-50 px-4">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-10">
@@ -40,7 +45,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer Section */}
+      {/* 6. Footer Section */}
       <Footer />
       
     </main>

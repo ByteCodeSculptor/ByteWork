@@ -27,7 +27,7 @@ const Footer = () => {
             <li><a href="#" className="hover:text-indigo-400 transition">Quantum Research</a></li>
             <li><a href="#" className="hover:text-indigo-400 transition">MERN Development</a></li>
             <li><a href="#" className="hover:text-indigo-400 transition">Spring Boot Architecture</a></li>
-            <li><a href="#" className="hover:text-indigo-400 transition">Express Pricing</a></li>
+            <li><a href="#" className="hover:text-indigo-400 transition">Python data handling</a></li>
           </ul>
         </div>
 
