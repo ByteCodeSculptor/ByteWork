@@ -8,11 +8,7 @@ export default function Navbar() {
         <div className="flex h-16 justify-between">
           <a href="#top" className="flex flex-shrink-0 items-center">
             <span className="mr-3 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 shadow-md transition-colors hover:bg-indigo-700">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M4 4L12 20" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M20 4L12 20" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="opacity-70" />
-                <circle cx="12" cy="4" r="2" fill="white" className="opacity-90" />
-              </svg>
+              <span className="font-mono text-lg font-bold text-white" aria-hidden="true">{'</>'}</span>
             </span>
             <span className="text-xl font-bold tracking-tight text-gray-900">
               {contact.brand.name}

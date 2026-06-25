@@ -20,7 +20,7 @@ export const currency = deepFreeze({ code: 'INR', symbol: '₹' });
 export const contact = deepFreeze({
   name: 'Vishnu Vardhan',
   role: 'Freelance Application Architect & Consultant',
-  brand: { name: 'V-Tech', suffix: '.Solutions' },
+  brand: { name: 'Byte', suffix: 'Work' },
   whatsapp: '919182407243',
   email: 'ramki3244@gmail.com',
   github: 'https://github.com/ByteCodeSculptor',
@@ -154,7 +154,7 @@ export const deliverables = deepFreeze({
 });
 
 export const seo = deepFreeze({
-  title: 'V-Tech.Solutions — Freelance App Architecture (Quantum, MERN, Java, Python)',
+  title: 'ByteWork — Freelance App Architecture (Quantum, MERN, Java, Python)',
   description:
     'Freelance application architecture and final-year project development across Quantum Computing (Qiskit), the MERN stack, Java/Spring Boot, and Python/AI — with source code, mentorship, and documentation included.',
   url: contact.portfolioUrl,
