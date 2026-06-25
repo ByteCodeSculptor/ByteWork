@@ -26,7 +26,7 @@ export const promoSettings = freeze({
   imageStyle:
     'vertical 9:16 poster, indigo (#4338ca) and white palette, modern clean tech aesthetic, ' +
     'subtle circuit/code motifs, high contrast, empty space at top for a title, no text, no words, no letters',
-  geminiModel: 'gemini-2.5-flash',
+  llmModel: 'llama-3.3-70b-versatile', // Groq default; override via LLM_MODEL env
 });
 
 export const promos = freeze([

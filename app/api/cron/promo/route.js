@@ -1,7 +1,7 @@
 import { services } from '@/config/site';
 import { promos, promoSettings } from '@/config/promo';
 import { nicheForDate } from '@/lib/promo/schedule';
-import { generateCopy } from '@/lib/promo/gemini';
+import { generateCopy } from '@/lib/promo/llm';
 import { buildImageUrl, fetchImage } from '@/lib/promo/pollinations';
 import { composeCaption } from '@/lib/promo/captions';
 import { buildPromoMessage, directLink } from '@/lib/whatsapp';
@@ -38,7 +38,7 @@ export async function GET(request) {
     const service = services.find((s) => s.id === nicheId);
 
     // 1. Integrity-gated AI copy (falls back to vetted static copy on any issue)
-    const copy = await generateCopy({ promo, service, apiKey: process.env.GEMINI_API_KEY });
+    const copy = await generateCopy({ promo, service });
 
     // 2. Keyless 9:16 image; seed varies per run for visual variety
     const imageUrl = buildImageUrl(promo.imageSubject, {
