@@ -4,7 +4,7 @@ import Section from '../ui/Section';
 /** "What you get / what's extra" scope section, driven by config. */
 export default function Deliverables() {
   return (
-    <Section className="border-t border-gray-100 bg-white">
+    <Section className="border-t border-gray-100 bg-white" reveal>
       <div className="mb-12 text-center">
         <h2 className="text-3xl font-bold text-gray-900">Deliverables &amp; Mentorship</h2>
         <p className="mt-4 text-lg text-gray-600">Transparent scope. No hidden terms.</p>
