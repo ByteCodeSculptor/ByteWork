@@ -46,10 +46,14 @@ APIs & Services → **Credentials** → Create credentials → **OAuth client ID
    - If no refresh token appears: revoke the app at myaccount.google.com/permissions and retry (a refresh token is only issued on first consent).
 
 ## Step 7 — Store the three values (do NOT paste them in chat)
-Set these as **Vercel env vars** (and tell me once they're in — don't share the values here):
+Set these as **GitHub Actions secrets** — Repo → Settings → Secrets and variables → Actions.
+(The render workflow performs the upload, so they live with GitHub, not Vercel.)
 - `YOUTUBE_CLIENT_ID`
 - `YOUTUBE_CLIENT_SECRET`
 - `YOUTUBE_REFRESH_TOKEN`
+
+Optional repo **variable** (Actions → Variables tab): `YT_PRIVACY` = `unlisted` (default) →
+switch to `public` once your app is verified.
 
 ## What Phase 2b will build on top of this
 - Exchange `refresh_token → access_token` each run (no user interaction).

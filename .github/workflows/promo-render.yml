@@ -15,7 +15,7 @@ on:
         required: true
         default: "Quantum project due? Learn it with mentorship."
       caption:
-        description: Telegram caption
+        description: Telegram / YouTube caption
         required: false
         default: "Test render from the ByteWork promo agent."
 
@@ -31,7 +31,13 @@ jobs:
       NICHE: ${{ github.event.client_payload.niche || 'manual' }}
       TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+      YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+      YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+      YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+      YT_PRIVACY: ${{ vars.YT_PRIVACY || 'unlisted' }}
     steps:
+      - uses: actions/checkout@v4
+
       - name: Install ffmpeg + ImageMagick
         run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg imagemagick fonts-dejavu-core
 
@@ -56,7 +62,7 @@ jobs:
             -map "[v]" -map 2:a -c:v libx264 -preset veryfast -c:a aac -shortest -movflags +faststart out.mp4
           ls -lh out.mp4
 
-      - name: Upload rendered Short (download here if Telegram is off)
+      - name: Upload rendered Short (download here if delivery is off)
         uses: actions/upload-artifact@v4
         with:
           name: promo-${{ github.run_id }}
@@ -69,3 +75,7 @@ jobs:
           curl -fsS -F chat_id="$TG_CHAT" -F caption="$CAPTION" -F video=@out.mp4 \
             "https://api.telegram.org/bot${TG_TOKEN}/sendVideo" -o /dev/null
           echo "Posted Short to Telegram."
+
+      - name: Upload to YouTube Shorts
+        if: ${{ env.YOUTUBE_REFRESH_TOKEN != '' }}
+        run: node scripts/youtube-upload.mjs out.mp4
