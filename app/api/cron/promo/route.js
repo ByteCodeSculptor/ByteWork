@@ -6,15 +6,20 @@ import { buildImageUrl, fetchImage } from '@/lib/promo/pollinations';
 import { composeCaption } from '@/lib/promo/captions';
 import { buildPromoMessage, directLink } from '@/lib/whatsapp';
 import { sendPhoto } from '@/lib/promo/telegram';
+import { dispatchRender } from '@/lib/promo/github';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 /**
- * Promo agent (MVP) — pinged every 6h by cron-job.org.
- * Picks the niche for the current IST window, generates integrity-gated copy +
- * a 9:16 image + a pre-filled WhatsApp link, and posts it to a private Telegram
- * channel for manual review/cross-posting. Auto-posting to IG/YT is a later phase.
+ * Promo agent — pinged every 6h by cron-job.org.
+ * Picks the niche for the current IST window and generates integrity-gated copy
+ * + a 9:16 image + a pre-filled WhatsApp link.
+ *
+ * Output mode (auto-detected):
+ *  - VIDEO  (GH_DISPATCH_TOKEN + GH_REPO set): dispatches a GitHub Actions render
+ *    that builds a 9:16 Short and posts it to Telegram.
+ *  - IMAGE  (Telegram env set): posts the static image to Telegram directly.
  */
 export async function GET(request) {
   const secret = process.env.CRON_SECRET;
@@ -24,8 +29,10 @@ export async function GET(request) {
   }
 
   try {
-    if (!process.env.TELEGRAM_BOT_TOKEN || !process.env.TELEGRAM_CHAT_ID) {
-      throw new Error('Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID');
+    const useRender = Boolean(process.env.GH_DISPATCH_TOKEN && process.env.GH_REPO);
+    const hasTelegram = Boolean(process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID);
+    if (!useRender && !hasTelegram) {
+      throw new Error('Configure GH_DISPATCH_TOKEN+GH_REPO (video) or TELEGRAM_BOT_TOKEN+TELEGRAM_CHAT_ID (image)');
     }
 
     const now = new Date();
@@ -37,30 +44,35 @@ export async function GET(request) {
     const promo = promos.find((p) => p.id === nicheId);
     const service = services.find((s) => s.id === nicheId);
 
-    // 1. Integrity-gated AI copy (falls back to vetted static copy on any issue)
+    // Integrity-gated copy + keyless image URL + pre-filled WhatsApp link
     const copy = await generateCopy({ promo, service });
-
-    // 2. Keyless 9:16 image; seed varies per run for visual variety
     const imageUrl = buildImageUrl(promo.imageSubject, {
       seed: Math.floor(now.getTime() / 1000) % 1_000_000,
       token: process.env.POLLINATIONS_TOKEN,
     });
-    const imageBuffer = await fetchImage(imageUrl, { token: process.env.POLLINATIONS_TOKEN });
-
-    // 3. Pre-filled WhatsApp deep link (reuses the existing facade + config number)
     const waLink = directLink(
       buildPromoMessage({ message: promo.waMessage, serviceName: service.name, keyword: promo.commentKeyword })
     );
-
-    // 4. Post to the private Telegram channel
     const caption = composeCaption({ copy, promo, waLink });
+
+    // VIDEO mode: hand off to GitHub Actions (renders 9:16 Short → Telegram)
+    if (useRender) {
+      await dispatchRender({
+        token: process.env.GH_DISPATCH_TOKEN,
+        repo: process.env.GH_REPO,
+        payload: { niche: nicheId, image_url: imageUrl, hook: copy.hook, caption },
+      });
+      return Response.json({ ok: true, niche: nicheId, copySource: copy.source, postedTo: 'github-actions' });
+    }
+
+    // IMAGE mode: post the static image straight to Telegram
+    const imageBuffer = await fetchImage(imageUrl, { token: process.env.POLLINATIONS_TOKEN });
     await sendPhoto({
       botToken: process.env.TELEGRAM_BOT_TOKEN,
       chatId: process.env.TELEGRAM_CHAT_ID,
       imageBuffer,
       caption,
     });
-
     return Response.json({ ok: true, niche: nicheId, copySource: copy.source, postedTo: 'telegram' });
   } catch (err) {
     return Response.json({ ok: false, error: String(err?.message || err) }, { status: 500 });
